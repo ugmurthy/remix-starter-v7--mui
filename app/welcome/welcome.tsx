@@ -1,48 +1,90 @@
+import { Box, Container, Stack, Typography, Link } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
 
+// Styled components
+const StyledImg = styled('img')(({ theme }) => ({
+  width: '100%',
+  maxWidth: 500,
+  display: 'block',
+  [theme.breakpoints.down('sm')]: {
+    maxWidth: '100vw',
+  }
+}));
+
+const NavContainer = styled(Box)(({ theme }) => ({
+  maxWidth: 300,
+  width: '100%',
+  padding: theme.spacing(3),
+  border: `1px solid ${theme.palette.mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[200]}`,
+  borderRadius: 24,
+}));
+
+const ResourceLink = styled(Link)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.spacing(1.5),
+  padding: theme.spacing(1.5),
+  color: theme.palette.mode === 'dark' ? theme.palette.primary[500] : theme.palette.primary[700],
+  textDecoration: 'none',
+  '&:hover': {
+    textDecoration: 'underline',
+  }
+}));
+
 export function Welcome() {
   return (
-    <main className="flex items-center justify-center pt-16 pb-4">
-      <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
-        <header className="flex flex-col items-center gap-9">
-          <div className="w-[500px] max-w-[100vw] p-4">
-            <img
+    <Box component="main" sx={{ 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      pt: 8,
+      pb: 2
+    }}>
+      <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+        <Stack component="header" spacing={4.5} alignItems="center">
+          <Box sx={{ p: 2 }}>
+            <StyledImg
               src={logoLight}
               alt="React Router"
-              className="block w-full dark:hidden"
+              sx={{ display: { dark: 'none' } }}
             />
-            <img
+            <StyledImg
               src={logoDark}
               alt="React Router"
-              className="hidden w-full dark:block"
+              sx={{ display: { light: 'none', dark: 'block' } }}
             />
-          </div>
-        </header>
-        <div className="max-w-[300px] w-full space-y-6 px-4">
-          <nav className="rounded-3xl border border-gray-200 p-6 dark:border-gray-700 space-y-4">
-            <p className="leading-6 text-gray-700 dark:text-gray-200 text-center">
+          </Box>
+        </Stack>
+
+        <NavContainer>
+          <Stack spacing={3}>
+            <Typography
+              variant="body1"
+              align="center"
+              color="text.secondary"
+            >
               What&apos;s next?
-            </p>
-            <ul>
+            </Typography>
+            <Stack component="ul" spacing={1} sx={{ listStyle: 'none', p: 0, m: 0 }}>
               {resources.map(({ href, text, icon }) => (
                 <li key={href}>
-                  <a
-                    className="group flex items-center gap-3 self-stretch p-3 leading-normal text-blue-700 hover:underline dark:text-blue-500"
+                  <ResourceLink
                     href={href}
                     target="_blank"
                     rel="noreferrer"
                   >
                     {icon}
                     {text}
-                  </a>
+                  </ResourceLink>
                 </li>
               ))}
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </main>
+            </Stack>
+          </Stack>
+        </NavContainer>
+      </Container>
+    </Box>
   );
 }
 
